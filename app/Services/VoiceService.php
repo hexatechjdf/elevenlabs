@@ -57,7 +57,7 @@ return asset('uploads/voices/' . $fileName);
 // Return URL to access the file
 // return response()->json(['audio_url' => asset('uploads/voices/' . $fileName)]);
 } catch (\GuzzleHttp\Exception\ClientException $e) {
-    dd($e);
+   
     Log::error('An error occurred: ' . $e->getMessage());
     return null;  // Show the error response from the API
 }
