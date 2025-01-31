@@ -12,7 +12,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
 
                         <li class="nav-item">
