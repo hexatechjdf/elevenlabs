@@ -59,10 +59,8 @@ class TextConvertJob implements ShouldQueue
                     $this->locationId,
                     $this->audioLinks,
                     $this->currentIndex + 1
-                ))->delay(1); // Schedule next chunk processing
+                ))->delay(1);
             } else {
-                // ->onQueue('upload_queue')
-                // dd($this->audioLinks);
                 dispatch(new VoiceUploadJob($this->audioLinks, $this->contactId, $this->locationId))->delay(3);
             }
         }catch(\Exception $e)

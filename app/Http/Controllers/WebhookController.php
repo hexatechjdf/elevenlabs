@@ -22,20 +22,28 @@ class WebhookController extends Controller
         {
             $locationId = @$data['location']['id'] ?? null;
             $contactId = @$data['contact_id'] ?? null;
-            $voice_id = @$data['customData']['voice_id'] ?? $this->setInvocie($locationId);
-            // return [$locationId, $contactId, $voice_id];
+            $voice_id = @$data['customData']['voice_id'] ?? $this->setVoice($locationId);
             if($voice_id)
             {
                 $chunks = str_split($message, 999);
                 dispatch((new TextConvertJob($voice_id, $chunks,$contactId,$locationId)))->delay(5);
             }
+            else
+            {
+                return 'Voice id is required. Send voice id as a parameter or set voice id in setting.';
+            }
+
+        }
+        else
+        {
+            return 'Message is required.';
 
         }
 
         return 1;
     }
 
-    public function setInvocie($locationId)
+    public function setVoice($locationId)
     {
       $user = User::where('location_id',$locationId)->first();
 

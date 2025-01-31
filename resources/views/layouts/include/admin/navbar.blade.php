@@ -1,7 +1,7 @@
 @php($authUser = auth()->user())
 @php($nav = $nav ?? null)
 @if (@$authUser &&  @$authUser->role==1)
-    <nav class="navbar main_nav d-none navbar-expand-md w-100 navbar-light bg-white shadow-sm position-absolute">
+    <nav class="navbar main_nav navbar-expand-md w-100 navbar-light bg-white shadow-sm position-absolute">
         <div class="container">
             @if (!$nav)
             <a class="navbar-brand" href="{{ url('/') }}">
