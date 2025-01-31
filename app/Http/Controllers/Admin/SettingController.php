@@ -11,12 +11,22 @@ use App\Models\Setting;
 
 class SettingController extends Controller
 {
+    public function home(Request $request)
+    {
+        $user = loginUser();
+        $route =  'admin';
+        if($user->role == 2)
+        {
+            $route = 'location';
+        }
+        return redirect()->route($route.'.setting.index');
+    }
     public function index(Request $request)
     {
         $settings = Setting::pluck('value','key')->toArray();
         $connecturl = CRM::directConnect();
         $scopes = CRM::$scopes;
-        $authuser = auth::user();
+        $authuser = loginUser();
         $company_name = null;
         $company_id = null;
         if(@$authuser->crmauth->company_id)

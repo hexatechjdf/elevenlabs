@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return redirect('/login');
 })->name('home');
@@ -27,7 +28,7 @@ Route::prefix('authorization')->name('crm.')->group(function () {
     Route::get('/crm/oauth/callback', [Auth2Controller::class, 'crmCallback'])->name('oauth_callback');
 });
 Route::group(['middleware' => ['auth']], function () {
-
+    Route::any('dashboard', [SettingController::class, 'home'])->name('dashboard');
     Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
         Route::any('dashboard', [SettingController::class, 'index'])->name('setting.index');
