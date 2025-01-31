@@ -1,5 +1,5 @@
 <section>
-    <form method="post" action="{{ route('admin.password.update') }}">
+    <form method="post" action="{{ route('password.update') }}">
         @csrf
         @method('put')
 
