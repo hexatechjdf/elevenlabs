@@ -16,7 +16,7 @@ class IndexController extends Controller
 
     public function saveSelectedVoice(Request $request)
     {
-        $user = auth()->user();
+        $user = loginUser();
         if($user->role == 1)
         {
             save_settings('custom_voice_id',$request->voice_id);

@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('dashboard', [SettingController::class, 'index'])->name('dashboard');
 Route::get('/', function () {
     return redirect('/login');
 })->name('home');
@@ -55,22 +54,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('voices/list/{type?}', [IndexController::class, 'getVoices'])->name('voices.list');
+    Route::post('save/selected/voice', [IndexController::class, 'saveSelectedVoice'])->name('save.selected.voice');
+    
 });
 
-Route::get('voices/list/{type?}', [IndexController::class, 'getVoices'])->name('voices.list');
-Route::post('save/selected/voice', [IndexController::class, 'saveSelectedVoice'])->name('save.selected.voice');
 
-
-
-
-Route::post('webhook/text/to/speech', [WebhookController::class, 'convertTextToSpeech'])->name('webhook.text.speech');
-
-
-use App\Jobs\ProcessRefreshToken;
-
-Route::get('/cron-jobs/process_refresh_token', function () {
-    dispatch((new ProcessRefreshToken())->onQueue('refresh_token'));
-});
 
 
 require __DIR__.'/auth.php';

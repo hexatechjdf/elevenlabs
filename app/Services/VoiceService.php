@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class VoiceService
 {
+
+    private const API_URL = 'https://api.elevenlabs.io/v1/';
     public function getlist()
     {
-        $url = 'https://api.elevenlabs.io/v1/voices';
+        $url = self::API_URL.'voices';
         $data = $this->submitRequest($url);
 
         return $data;
@@ -22,7 +24,7 @@ class VoiceService
     {
         $appApiKey = supersetting('ele_api_key', null);
 
-$url = 'https://api.elevenlabs.io/v1/text-to-speech/' . $voice_id . '?output_format=mp3_44100_64';
+$url = self::API_URL.'text-to-speech/' . $voice_id . '?output_format=mp3_44100_64';
 
 $client = new \GuzzleHttp\Client();
 

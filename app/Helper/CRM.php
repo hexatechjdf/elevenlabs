@@ -19,7 +19,7 @@ class CRM
     protected static $userType = ['Company' => 'company_id', 'Location' => 'location_id'];
     //oauth.write oauth.readonly locations/customFields.write  locations/customFields.readonly
     // public static $scopes = "contacts.readonly contacts.write locations.readonly companies.readonly oauth.readonly oauth.write locations/customFields.readonly locations/customFields.write medias.readonly medias.write";
-    public static $scopes = "locations.readonly users.readonly users.write contacts.readonly contacts.write oauth.write oauth.readonly conversations/message.readonly conversations/message.write conversations.readonly conversations.write companies.readonly";
+    public static $scopes = "locations.readonly users.readonly contacts.readonly conversations/message.readonly conversations/message.write conversations.readonly conversations.write";
     protected static $no_token = 'No Token';
     protected static $no_record = 'No Data';
 

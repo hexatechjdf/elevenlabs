@@ -56,7 +56,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 d-none" hidden>
                 <div class="card">
                     <div class="card-header">
                         <h4 class="h4">CRM OAuth Connectivity</h4>
