@@ -22,10 +22,11 @@ class TextConvertJob implements ShouldQueue
     public $locationId;
     public $audioLinks;
     public $currentIndex;
+    public $data;
     /**
      * Create a new job instance.
      */
-    public function __construct($voice_id, $chunks,$contactId,$locationId,$audioLinks = [], $currentIndex = 0)
+    public function __construct($voice_id, $chunks,$contactId,$locationId,$data=[],$audioLinks = [], $currentIndex = 0)
     {
         $this->voice_id = $voice_id;
         $this->chunks = $chunks;
@@ -33,6 +34,7 @@ class TextConvertJob implements ShouldQueue
         $this->locationId = $locationId;
         $this->audioLinks = $audioLinks;
         $this->currentIndex = $currentIndex;
+        $this->data = $data;
     }
 
     /**
@@ -43,7 +45,7 @@ class TextConvertJob implements ShouldQueue
         try{
             if (isset($this->chunks[$this->currentIndex])) {
                 $message = $this->chunks[$this->currentIndex];
-                $link = $voiceService->textToSpeech($message, $this->voice_id);
+                $link = $voiceService->textToSpeech($message, $this->voice_id,$this->data);
 
                 if ($link) {
                     $this->audioLinks[] = $link;
@@ -57,6 +59,7 @@ class TextConvertJob implements ShouldQueue
                     $this->chunks,
                     $this->contactId,
                     $this->locationId,
+                    $this->data,
                     $this->audioLinks,
                     $this->currentIndex + 1
                 ))->delay(1);

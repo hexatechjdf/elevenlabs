@@ -42,7 +42,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['as' => 'location.', 'prefix' => 'location'], function () {
         Route::get('dashboard', [LocationController::class, 'index'])->name('setting.index');
         Route::get('voices/list', [LocationController::class, 'voices'])->name('get.all.voices');
-        Route::get('voices/own', [LocationController::class, 'voices'])->name('get.own.voices');
+        Route::get('voices/own', [LocationController::class, 'ownvoices'])->name('get.own.voices');
+        Route::post('voices/own/submit', [LocationController::class, 'ownvoicesSubmit'])->name('own.voice.submit');
     });
 });
 
@@ -57,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('voices/list/{type?}', [IndexController::class, 'getVoices'])->name('voices.list');
     Route::post('save/selected/voice', [IndexController::class, 'saveSelectedVoice'])->name('save.selected.voice');
-    
+
 });
 
 

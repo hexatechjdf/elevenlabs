@@ -20,8 +20,54 @@ class VoiceService
         return $data;
     }
 
-    public function textToSpeech($text,$voice_id)
+    public function uploadVoice($name,$fullPath)
     {
+        $appApiKey = supersetting('ele_api_key', null);
+
+        $url = self::API_URL.'voices/add';
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->request('POST', $url, [
+            'headers' => [
+                'xi-api-key' => $appApiKey,
+            ],
+            'multipart' => [
+                [
+                    'name'     => 'name',
+                    'contents' => $name // Voice name
+                ],
+                [
+                    'name'     => 'files',
+                    'contents' => fopen($fullPath, 'r'),
+                    'filename' => $name.'mp3'
+                ]
+            ]
+        ]);
+        $data = $response->getBody();
+        return  json_decode($data,true);
+
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            Log::error('An error occurred: ' . $e->getMessage());
+            return null;  // Show the error response from the API
+        }
+    }
+
+    public function textToSpeech($text,$voice_id,$dataa = [])
+    {
+        $setting = [
+            'style' => @$dataa['style'] ?? 0,
+            'use_speaker_boost' => @$dataa['use_speaker_boost'] ?? true,
+        ];
+        if(isset($dataa['stability']))
+        {
+            $setting['stability'] = $dataa['stability'];
+        }
+        if(isset($dataa['similarity_boost']))
+        {
+            $setting['similarity_boost'] = $dataa['similarity_boost'];
+        }
+
         $appApiKey = supersetting('ele_api_key', null);
 
 $url = self::API_URL.'text-to-speech/' . $voice_id . '?output_format=mp3_44100_64';
@@ -32,7 +78,8 @@ try {
     $response = $client->request('POST', $url, [
         'json' => [
             'text' => $text,
-            'model_id' => 'eleven_multilingual_v2'
+            'model_id' => 'eleven_multilingual_v2',
+            'voice_settings' => $setting
         ],
         'headers' => [
             'Content-Type' => 'application/json',
@@ -40,6 +87,7 @@ try {
         ],
     ]);
     $audioContent = $response->getBody()->getContents();
+
     $directory = public_path('uploads/voices');
 if (!file_exists($directory)) {
     mkdir($directory, 0777, true); // Create directory if it doesn't exist
@@ -57,7 +105,6 @@ return asset('uploads/voices/' . $fileName);
 // Return URL to access the file
 // return response()->json(['audio_url' => asset('uploads/voices/' . $fileName)]);
 } catch (\GuzzleHttp\Exception\ClientException $e) {
-   
     Log::error('An error occurred: ' . $e->getMessage());
     return null;  // Show the error response from the API
 }

@@ -53,7 +53,7 @@ class SettingController extends Controller
         // $list = $voiceService->getlist();
         // dd($list);
         $savedVoiceId = supersetting('custom_voice_id');
-        return view('admin.voices.index',get_defined_vars());
+        return view('voices.index',get_defined_vars());
     }
 
     public function userProfile(Request $request)

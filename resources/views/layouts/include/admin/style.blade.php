@@ -58,4 +58,7 @@
             text-align: center;
             width: 100%;
         }
+        .copy_url{
+            cursor: pointer;
+        }
 </style>

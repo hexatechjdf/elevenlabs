@@ -17,6 +17,9 @@ class WebhookController extends Controller
     {
         $data = $request->all();
         $message = @$data['customData']['message'] ?? null;
+        $settings = @$data['customData']['voice_settings'] ?? '';
+        $settings = json_decode($settings, true) ?? null;
+
         // return count($chunks);
         if($message)
         {
@@ -26,7 +29,7 @@ class WebhookController extends Controller
             if($voice_id)
             {
                 $chunks = str_split($message, 999);
-                dispatch((new TextConvertJob($voice_id, $chunks,$contactId,$locationId)))->delay(5);
+                dispatch((new TextConvertJob($voice_id, $chunks,$contactId,$locationId,$settings ?? [])))->delay(5);
             }
             else
             {
