@@ -55,17 +55,17 @@ class VoiceService
 
     public function textToSpeech($text,$voice_id,$dataa = [])
     {
-        $setting = [
+        $setting = (object) [
             'style' => @$dataa['style'] ?? 0,
             'use_speaker_boost' => @$dataa['use_speaker_boost'] ?? true,
         ];
-        if(isset($dataa['stability']))
-        {
-            $setting['stability'] = $dataa['stability'];
+
+        if (isset($dataa['stability'])) {
+            $setting->stability = (float) $dataa['stability']; // Ensure double
         }
-        if(isset($dataa['similarity_boost']))
-        {
-            $setting['similarity_boost'] = $dataa['similarity_boost'];
+
+        if (isset($dataa['similarity_boost'])) {
+            $setting->similarity_boost = (float) $dataa['similarity_boost']; // Ensure double
         }
 
         $appApiKey = supersetting('ele_api_key', null);
@@ -75,12 +75,14 @@ $url = self::API_URL.'text-to-speech/' . $voice_id . '?output_format=mp3_44100_6
 $client = new \GuzzleHttp\Client();
 
 try {
+    $payload = [
+        'text' => $text,
+        'model_id' => 'eleven_multilingual_v2',
+        'voice_settings' => $setting
+    ];
+
     $response = $client->request('POST', $url, [
-        'json' => [
-            'text' => $text,
-            'model_id' => 'eleven_multilingual_v2',
-            'voice_settings' => $setting
-        ],
+        'json' => $payload,
         'headers' => [
             'Content-Type' => 'application/json',
             'xi-api-key' => $appApiKey,
@@ -98,6 +100,7 @@ $filePath = $directory . '/' . $fileName;
 
 // Save the file
 file_put_contents($filePath, $audioContent);
+
 
 // return 'https://ac8b-103-191-123-14.ngrok-free.app/uploads/voices/' . $fileName;
 return asset('uploads/voices/' . $fileName);
